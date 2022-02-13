@@ -41,17 +41,18 @@ fun SleepDatePicker() {
     val dateMilliseconds = remember { mutableStateOf(formatDate(mDay, mMonth, mYear)) }
 
     val datePickerDialog =
-        DatePickerDialog(context, null, mYear, mMonth, mDay).also { datePickerDialog ->
-            datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
-            datePickerDialog.setOnDateSetListener { datePicker, year: Int, month: Int, dayOfMonth: Int ->
-                mDay = dayOfMonth
-                mMonth = month
-                mYear = year
+        DatePickerDialog(context, null, mYear, mMonth, mDay)
+            .also { datePickerDialog ->
+                datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
+                datePickerDialog.setOnDateSetListener { _, year: Int, month: Int, dayOfMonth: Int ->
+                    mDay = dayOfMonth
+                    mMonth = month
+                    mYear = year
 
-                dateMilliseconds.value = formatDate(dayOfMonth, month, year)
-                Log.d("millisecondtest", dateMilliseconds.value.toString())
+                    dateMilliseconds.value = formatDate(dayOfMonth, month, year)
+                    Log.d("millisecondtest", dateMilliseconds.value.toString())
+                }
             }
-        }
 
     Column(
         modifier = Modifier
@@ -84,5 +85,5 @@ private fun formatDate(mDay: Int, mMonth: Int, mYear: Int): Long {
     val formatter = SimpleDateFormat("dd MM yyyy", Locale.getDefault()).also {
         it.timeZone = TimeZone.getTimeZone("UTC")
     }
-    return formatter.parse("$mDay $mMonth $mYear")?.time!!.toLong()
+    return formatter.parse("$mDay ${mMonth + 1} $mYear")?.time!!.toLong()
 }
