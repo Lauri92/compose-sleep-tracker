@@ -72,7 +72,6 @@ fun SleepDatePicker() {
             }) {
             Text(text = "Select a date")
         }
-        Spacer(modifier = Modifier.size(10.dp))
         Text(
             text = "Selected date: $mDay.${mMonth + 1}.$mYear\nTime in millis: ${dateMilliseconds.value}",
             color = Color.Green,
