@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,7 +29,8 @@ fun SleepRecordContent(
     onSleepMinutesChanged: (Int) -> Unit,
     sleepDate: Long,
     onSleepDateChanged: (Long) -> Unit,
-    sleepDatePickerSupportViewModel: SleepDatePickerSupportViewModel
+    sleepDatePickerSupportViewModel: SleepDatePickerSupportViewModel,
+    addSleepRecord: () -> Unit,
 ) {
 
     val context = LocalContext.current
@@ -82,6 +84,7 @@ fun SleepRecordContent(
                     sleepDate = sleepDate
                 )
                 Log.d("sleepRecordtest", sleepRecord.toString())
+                addSleepRecord()
             }) {
             Text(
                 fontSize = 25.sp,

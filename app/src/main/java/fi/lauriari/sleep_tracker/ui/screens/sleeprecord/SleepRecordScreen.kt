@@ -40,7 +40,10 @@ fun SleepRecordScreen(
                 onSleepDateChanged = {
                     mainViewModel.sleepDate.value = it
                 },
-                sleepDatePickerSupportViewModel = sleepDatePickerSupportViewModel
+                sleepDatePickerSupportViewModel = sleepDatePickerSupportViewModel,
+                addSleepRecord = {
+                    mainViewModel.addSleepRecord()
+                },
             )
         }
     )

@@ -8,6 +8,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fi.lauriari.sleep_tracker.models.SleepRecord
 import fi.lauriari.sleep_tracker.repository.SleepRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,17 +25,27 @@ class MainViewModel @Inject constructor(
     val sleepMinutes: MutableState<Int> = mutableStateOf(0)
     val sleepDate: MutableState<Long> = mutableStateOf(0)
 
+    private val _allSleepRecords = MutableStateFlow<List<SleepRecord>>(emptyList())
+    val allSleepRecords: StateFlow<List<SleepRecord>> = _allSleepRecords
+
     fun addSleepRecord() {
         viewModelScope.launch(context = Dispatchers.IO) {
-            /*repository.addSleepRecord(
+            repository.addSleepRecord(
                 SleepRecord(
                     sleepQuality = sleepQuality.value,
                     sleepHours = sleepHours.value,
-                    sleepMinutes = sleepMinutes.value
+                    sleepMinutes = sleepMinutes.value,
+                    sleepDate = sleepDate.value
                 )
             )
+        }
+    }
 
-             */
+    fun getAllSleepRecords() {
+        viewModelScope.launch {
+            repository.getAllSleepRecords.collect { sleepRecordList ->
+                _allSleepRecords.value = sleepRecordList
+            }
         }
     }
 
