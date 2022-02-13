@@ -2,7 +2,6 @@ package fi.lauriari.sleep_tracker.ui.screens.sleeprecord
 
 import android.app.DatePickerDialog
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,8 +41,7 @@ fun SleepDatePicker(
     var mYear by remember { mutableStateOf(now.get(Calendar.YEAR)) }
     var mMonth by remember { mutableStateOf(now.get(Calendar.MONTH)) }
     var mDay by remember { mutableStateOf(now.get(Calendar.DAY_OF_MONTH)) }
-    //val dateMilliseconds = remember { mutableStateOf(formatDate(mDay, mMonth, mYear)) }
-    onSleepDateChanged(formatDate(mDay, mMonth, mYear))
+    onSleepDateChanged(formatDateToMilliseconds(mDay, mMonth, mYear))
 
     val datePickerDialog =
         DatePickerDialog(context, null, mYear, mMonth, mDay)
@@ -52,7 +51,7 @@ fun SleepDatePicker(
                     mDay = dayOfMonth
                     mMonth = month
                     mYear = year
-                    onSleepDateChanged(formatDate(mDay, mMonth, mYear))
+                    onSleepDateChanged(formatDateToMilliseconds(mDay, mMonth, mYear))
                 }
             }
 
@@ -66,6 +65,13 @@ fun SleepDatePicker(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            modifier = Modifier
+                .padding(15.dp),
+            text = if (sleepDate != 0L) "Selected date: ${formatMillisecondsToDate(sleepDate)}" else "",
+            color = Color.Green,
+            fontSize = 25.sp
+        )
         Button(
             modifier = Modifier
                 .padding(15.dp),
@@ -74,17 +80,16 @@ fun SleepDatePicker(
             }) {
             Text(text = "Select a date")
         }
-        Text(
-            text = "Selected date: $mDay.${mMonth + 1}.$mYear\nTime in millis: $sleepDate",
-            color = Color.Green,
-            fontSize = 20.sp
-        )
     }
 }
 
-private fun formatDate(mDay: Int, mMonth: Int, mYear: Int): Long {
+private fun formatDateToMilliseconds(mDay: Int, mMonth: Int, mYear: Int): Long {
     val formatter = SimpleDateFormat("dd MM yyyy", Locale.getDefault()).also {
         it.timeZone = TimeZone.getTimeZone("UTC")
     }
     return formatter.parse("$mDay ${mMonth + 1} $mYear")?.time!!.toLong()
+}
+
+private fun formatMillisecondsToDate(milliseconds: Long): String {
+    return DateFormat.getDateInstance().format(milliseconds)
 }
