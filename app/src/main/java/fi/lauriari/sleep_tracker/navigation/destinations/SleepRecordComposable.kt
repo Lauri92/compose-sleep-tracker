@@ -1,14 +1,18 @@
 package fi.lauriari.sleep_tracker.navigation.destinations
 
-import androidx.compose.material.Text
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import fi.lauriari.sleep_tracker.ui.screens.sleeprecord.SleepRecordScreen
 import fi.lauriari.sleep_tracker.util.Constants.SLEEP_RECORD_SCREEN
+import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
 
-fun NavGraphBuilder.sleepRecordComposable() {
+@RequiresApi(Build.VERSION_CODES.N)
+fun NavGraphBuilder.sleepRecordComposable(mainViewModel: MainViewModel) {
     composable(
         route = SLEEP_RECORD_SCREEN
     ) {
-        Text("This is sleep record screen")
+        SleepRecordScreen()
     }
 }
