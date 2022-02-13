@@ -1,5 +1,7 @@
 package fi.lauriari.sleep_tracker.ui.screens.sleeprecord
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chargemap.compose.numberpicker.NumberPicker
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun SleepDuration(
     sleepHours: Int,
@@ -54,6 +57,9 @@ fun SleepDuration(
                     range = 3..12,
                     onValueChange = { selectedHours ->
                         onSleepHoursChanged(selectedHours)
+                        if (selectedHours == 12) {
+                            onSleepMinutesChanged(0)
+                        }
                     }
                 )
 
@@ -64,7 +70,9 @@ fun SleepDuration(
                 )
             }
         }
-        if (sleepHours <= 11) {
+        AnimatedVisibility(
+            visible = sleepHours <= 11
+        ) {
             Column() {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -87,8 +95,6 @@ fun SleepDuration(
                     )
                 }
             }
-        } else {
-            onSleepMinutesChanged(0)
         }
     }
 }

@@ -38,28 +38,20 @@ fun SleepDatePicker() {
     var mYear by remember { mutableStateOf(now.get(Calendar.YEAR)) }
     var mMonth by remember { mutableStateOf(now.get(Calendar.MONTH)) }
     var mDay by remember { mutableStateOf(now.get(Calendar.DAY_OF_MONTH)) }
-    val dateMilliseconds = remember { mutableStateOf<Long>(0) }
+    val dateMilliseconds = remember { mutableStateOf(formatDate(mDay, mMonth, mYear)) }
 
-    val datePickerDialog = DatePickerDialog(context)
-        .also { datePickerDialog ->
+    val datePickerDialog =
+        DatePickerDialog(context, null, mYear, mMonth, mDay).also { datePickerDialog ->
             datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
             datePickerDialog.setOnDateSetListener { datePicker, year: Int, month: Int, dayOfMonth: Int ->
                 mDay = dayOfMonth
-                mMonth = month + 1
+                mMonth = month
                 mYear = year
-                // TODO: SET date to milliseconds as a value which will eventually be added to Room
 
-                val formatter = SimpleDateFormat("dd MM yyyy", Locale.getDefault()).also {
-                    it.timeZone = TimeZone.getTimeZone("UTC")
-                }
-                val calendarTime = formatter.parse("$mDay $mMonth $mYear")?.time!!.toLong()
-
-                dateMilliseconds.value = calendarTime
-
-                Log.d("millisecondstest", dateMilliseconds.value.toString())
+                dateMilliseconds.value = formatDate(dayOfMonth, month, year)
+                Log.d("millisecondtest", dateMilliseconds.value.toString())
             }
         }
-
 
     Column(
         modifier = Modifier
@@ -81,9 +73,16 @@ fun SleepDatePicker() {
         }
         Spacer(modifier = Modifier.size(10.dp))
         Text(
-            text = "Selected date: $mDay.$mMonth.$mYear\nTime in millis: ${dateMilliseconds.value}",
+            text = "Selected date: $mDay.${mMonth + 1}.$mYear\nTime in millis: ${dateMilliseconds.value}",
             color = Color.Green,
             fontSize = 20.sp
         )
     }
+}
+
+private fun formatDate(mDay: Int, mMonth: Int, mYear: Int): Long {
+    val formatter = SimpleDateFormat("dd MM yyyy", Locale.getDefault()).also {
+        it.timeZone = TimeZone.getTimeZone("UTC")
+    }
+    return formatter.parse("$mDay $mMonth $mYear")?.time!!.toLong()
 }
