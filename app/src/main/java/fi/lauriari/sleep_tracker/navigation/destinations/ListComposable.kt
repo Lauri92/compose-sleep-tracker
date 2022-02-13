@@ -2,7 +2,7 @@ package fi.lauriari.sleep_tracker.navigation.destinations
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import fi.lauriari.sleep_tracker.ui.screens.ListScreen
+import fi.lauriari.sleep_tracker.ui.screens.list.ListScreen
 import fi.lauriari.sleep_tracker.util.Constants.LIST_SCREEN
 import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
 
