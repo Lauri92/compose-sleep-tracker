@@ -22,10 +22,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fi.lauriari.sleep_tracker.util.Constants
+import fi.lauriari.sleep_tracker.util.Constants.SLEEP_QUALITY_VALUES
 
 @Composable
 fun SleepQualityDropDown(
-    sleepQualityList: List<String>
+    onSleepQualitySelected: (String) -> Unit,
+    sleepQuality: String
 ) {
     Text(
         fontSize = 32.sp,
@@ -64,7 +67,7 @@ fun SleepQualityDropDown(
             modifier = Modifier
                 .padding(8.dp)
                 .weight(8f),
-            text = "Select Sleep quality",
+            text = sleepQuality,
             style = MaterialTheme.typography.subtitle2
         )
         IconButton(
@@ -86,14 +89,15 @@ fun SleepQualityDropDown(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            sleepQualityList.forEach { sleepQualityListItem ->
+            SLEEP_QUALITY_VALUES.forEach { sleepQualityValue ->
                 DropdownMenuItem(
                     onClick = {
+                        onSleepQualitySelected(sleepQualityValue)
                         expanded = false
                     })
                 {
                     SleepQualityItem(
-                        sleepQualityString = sleepQualityListItem
+                        sleepQualityString = sleepQualityValue
                     )
                 }
             }
@@ -104,8 +108,8 @@ fun SleepQualityDropDown(
 @Composable
 @Preview
 fun SleepQualityDropDownPreview() {
-    val list = listOf("Very good", "Average", "Bad")
     SleepQualityDropDown(
-        sleepQualityList = list
+        onSleepQualitySelected = { },
+        sleepQuality = "Something"
     )
 }
