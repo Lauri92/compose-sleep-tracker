@@ -2,11 +2,9 @@ package fi.lauriari.sleep_tracker.ui.screens
 
 import android.app.DatePickerDialog
 import android.os.Build
-import android.widget.DatePicker
-import android.widget.Toast
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
@@ -20,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chargemap.compose.numberpicker.NumberPicker
 import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
+import java.text.SimpleDateFormat
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -43,6 +42,10 @@ fun ListScreen(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 SleepDatePicker()
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+
             }
         },
         floatingActionButton = {
@@ -135,26 +138,31 @@ fun SleepDatePicker() {
         color = Color.Cyan
     )
 
-    val mYear: Int
-    val mMonth: Int
-    val mDay: Int
     val now = Calendar.getInstance()
-    mYear = now.get(Calendar.YEAR)
-    mMonth = now.get(Calendar.MONTH)
-    mDay = now.get(Calendar.DAY_OF_MONTH)
-    now.time = Date()
-    val date = remember { mutableStateOf("") }
-    val datePickerDialog = DatePickerDialog(
-        context, { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            val cal = Calendar.getInstance()
-            cal.set(year, month, dayOfMonth)
-        }, mYear, mMonth, mDay
-    ).also { datePickerDialog ->
-        datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
-        datePickerDialog.setOnDateSetListener { datePicker, year: Int, month: Int, dayOfMonth: Int ->
-            Toast.makeText(context, "$year, ${month + 1}, $dayOfMonth", Toast.LENGTH_SHORT).show()
+    var mYear by remember { mutableStateOf(now.get(Calendar.YEAR)) }
+    var mMonth by remember { mutableStateOf(now.get(Calendar.MONTH)) }
+    var mDay by remember { mutableStateOf(now.get(Calendar.DAY_OF_MONTH)) }
+    val dateMilliseconds = remember { mutableStateOf<Long>(0) }
+
+    val datePickerDialog = DatePickerDialog(context)
+        .also { datePickerDialog ->
+            datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
+            datePickerDialog.setOnDateSetListener { datePicker, year: Int, month: Int, dayOfMonth: Int ->
+                mDay = dayOfMonth
+                mMonth = month + 1
+                mYear = year
+                // TODO: SET date to milliseconds as a value which will eventually be added to Room
+
+                val formatter = SimpleDateFormat("dd MM yyyy", Locale.getDefault()).also {
+                    it.timeZone = TimeZone.getTimeZone("UTC")
+                }
+                val calendarTime = formatter.parse("$mDay $mMonth $mYear")?.time!!.toLong()
+
+                dateMilliseconds.value = calendarTime
+
+                Log.d("millisecondstest", dateMilliseconds.value.toString())
+            }
         }
-    }
 
 
     Column(
@@ -171,15 +179,9 @@ fun SleepDatePicker() {
         }
         Spacer(modifier = Modifier.size(16.dp))
         Text(
-            modifier = Modifier.clickable {
-                Toast.makeText(
-                    context,
-                    "Year: $mYear, Month: $mMonth, Day: $mDay",
-                    Toast.LENGTH_SHORT
-                ).show()
-            },
-            text = "Selected date: ${date.value}",
-            color = Color.Magenta
+            text = "Selected date: $mDay.$mMonth.$mYear\nTime in millis: ${dateMilliseconds.value}",
+            color = Color.Green,
+            fontSize = 20.sp
         )
     }
 }
