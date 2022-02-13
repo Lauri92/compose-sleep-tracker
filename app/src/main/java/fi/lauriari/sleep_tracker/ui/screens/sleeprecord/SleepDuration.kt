@@ -3,6 +3,7 @@ package fi.lauriari.sleep_tracker.ui.screens.sleeprecord
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Colors
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,7 +15,12 @@ import androidx.compose.ui.unit.sp
 import com.chargemap.compose.numberpicker.NumberPicker
 
 @Composable
-fun SleepDuration() {
+fun SleepDuration(
+    sleepHours: Int,
+    onSleepHoursChanged: (Int) -> Unit,
+    sleepMinutes: Int,
+    onSleepMinutesChanged: (Int) -> Unit
+) {
 
     Spacer(modifier = Modifier.height(10.dp))
 
@@ -23,9 +29,6 @@ fun SleepDuration() {
         text = "Sleep Duration",
         color = Color.Cyan
     )
-
-    var hourPickerValue by remember { mutableStateOf(0) }
-    var minutePickerValue by remember { mutableStateOf(0) }
 
     Row(
         modifier = Modifier
@@ -44,12 +47,13 @@ fun SleepDuration() {
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 NumberPicker(
+                    dividersColor = Color.Green,
                     modifier = Modifier
                         .background(Color.Gray),
-                    value = hourPickerValue,
+                    value = sleepHours,
                     range = 3..12,
-                    onValueChange = {
-                        hourPickerValue = it
+                    onValueChange = { selectedHours ->
+                        onSleepHoursChanged(selectedHours)
                     }
                 )
 
@@ -60,26 +64,31 @@ fun SleepDuration() {
                 )
             }
         }
-        Column() {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                NumberPicker(
-                    modifier = Modifier
-                        .background(Color.Gray),
-                    value = minutePickerValue,
-                    range = 0..59,
-                    onValueChange = {
-                        minutePickerValue = it
-                    }
-                )
-                Text(
-                    modifier = Modifier
-                        .padding(5.dp),
-                    text = "Minutes"
-                )
+        if (sleepHours <= 11) {
+            Column() {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    NumberPicker(
+                        dividersColor = Color.Green,
+                        modifier = Modifier
+                            .background(Color.Gray),
+                        value = sleepMinutes,
+                        range = 0..59,
+                        onValueChange = { selectedMinutes ->
+                            onSleepMinutesChanged(selectedMinutes)
+                        }
+                    )
+                    Text(
+                        modifier = Modifier
+                            .padding(5.dp),
+                        text = "Minutes"
+                    )
+                }
             }
+        } else {
+            onSleepMinutesChanged(0)
         }
     }
 }

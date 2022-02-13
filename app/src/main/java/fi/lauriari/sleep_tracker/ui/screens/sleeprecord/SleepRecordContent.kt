@@ -14,8 +14,12 @@ import fi.lauriari.sleep_tracker.components.SleepQualityDropDown
 
 @Composable
 fun SleepRecordContent(
+    sleepQuality: String,
     onSleepQualitySelected: (String) -> Unit,
-    sleepQuality: String
+    sleepHours: Int,
+    onSleepHoursChanged: (Int) -> Unit,
+    sleepMinutes: Int,
+    onSleepMinutesChanged: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -32,7 +36,12 @@ fun SleepRecordContent(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        SleepDuration()
+        SleepDuration(
+            sleepHours = sleepHours,
+            onSleepHoursChanged = onSleepHoursChanged,
+            sleepMinutes = sleepMinutes,
+            onSleepMinutesChanged = onSleepMinutesChanged
+        )
 
         Spacer(modifier = Modifier.height(10.dp))
 

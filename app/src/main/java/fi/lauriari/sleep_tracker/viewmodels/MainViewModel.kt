@@ -14,6 +14,8 @@ class MainViewModel @Inject constructor(
 
 
     val sleepQuality: MutableState<String> = mutableStateOf("Select Sleep Quality")
+    val sleepHours: MutableState<Int> = mutableStateOf(3)
+    val sleepMinutes: MutableState<Int> = mutableStateOf(0)
 
 
 }
