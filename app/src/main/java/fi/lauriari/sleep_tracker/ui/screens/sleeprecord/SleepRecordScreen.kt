@@ -16,6 +16,7 @@ fun SleepRecordScreen(
     val sleepQuality: String by mainViewModel.sleepQuality
     val sleepHours: Int by mainViewModel.sleepHours
     val sleepMinutes: Int by mainViewModel.sleepMinutes
+    val sleepDate: Long by mainViewModel.sleepDate
 
 
     Scaffold(
@@ -32,6 +33,10 @@ fun SleepRecordScreen(
                 sleepMinutes = sleepMinutes,
                 onSleepMinutesChanged = {
                     mainViewModel.sleepMinutes.value = it
+                },
+                sleepDate = sleepDate,
+                onSleepDateChanged = {
+                    mainViewModel.sleepDate.value = it
                 }
             )
         }

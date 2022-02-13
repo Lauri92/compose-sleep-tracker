@@ -22,7 +22,10 @@ import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-fun SleepDatePicker() {
+fun SleepDatePicker(
+    sleepDate: Long,
+    onSleepDateChanged: (Long) -> Unit
+) {
 
     val context = LocalContext.current
 
@@ -38,7 +41,8 @@ fun SleepDatePicker() {
     var mYear by remember { mutableStateOf(now.get(Calendar.YEAR)) }
     var mMonth by remember { mutableStateOf(now.get(Calendar.MONTH)) }
     var mDay by remember { mutableStateOf(now.get(Calendar.DAY_OF_MONTH)) }
-    val dateMilliseconds = remember { mutableStateOf(formatDate(mDay, mMonth, mYear)) }
+    //val dateMilliseconds = remember { mutableStateOf(formatDate(mDay, mMonth, mYear)) }
+    onSleepDateChanged(formatDate(mDay, mMonth, mYear))
 
     val datePickerDialog =
         DatePickerDialog(context, null, mYear, mMonth, mDay)
@@ -48,9 +52,7 @@ fun SleepDatePicker() {
                     mDay = dayOfMonth
                     mMonth = month
                     mYear = year
-
-                    dateMilliseconds.value = formatDate(dayOfMonth, month, year)
-                    Log.d("millisecondtest", dateMilliseconds.value.toString())
+                    onSleepDateChanged(formatDate(mDay, mMonth, mYear))
                 }
             }
 
@@ -73,7 +75,7 @@ fun SleepDatePicker() {
             Text(text = "Select a date")
         }
         Text(
-            text = "Selected date: $mDay.${mMonth + 1}.$mYear\nTime in millis: ${dateMilliseconds.value}",
+            text = "Selected date: $mDay.${mMonth + 1}.$mYear\nTime in millis: $sleepDate",
             color = Color.Green,
             fontSize = 20.sp
         )

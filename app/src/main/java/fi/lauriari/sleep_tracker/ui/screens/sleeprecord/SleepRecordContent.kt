@@ -2,7 +2,6 @@ package fi.lauriari.sleep_tracker.ui.screens.sleeprecord
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,12 +19,15 @@ fun SleepRecordContent(
     sleepHours: Int,
     onSleepHoursChanged: (Int) -> Unit,
     sleepMinutes: Int,
-    onSleepMinutesChanged: (Int) -> Unit
+    onSleepMinutesChanged: (Int) -> Unit,
+    sleepDate: Long,
+    onSleepDateChanged: (Long) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black),
+            .background(Color.Black)
+            .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(10.dp))
@@ -46,7 +48,10 @@ fun SleepRecordContent(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        SleepDatePicker()
+        SleepDatePicker(
+            sleepDate = sleepDate,
+            onSleepDateChanged = onSleepDateChanged
+        )
 
         OutlinedButton(
             modifier = Modifier
@@ -58,7 +63,7 @@ fun SleepRecordContent(
                 .height(100.dp),
             onClick = { /*TODO*/ }) {
             Text(
-                fontSize = 30.sp,
+                fontSize = 25.sp,
                 text = "Insert Sleep Record"
             )
         }
