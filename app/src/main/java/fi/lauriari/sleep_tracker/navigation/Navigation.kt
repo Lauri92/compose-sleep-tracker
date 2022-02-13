@@ -10,12 +10,14 @@ import fi.lauriari.sleep_tracker.navigation.destinations.listComposable
 import fi.lauriari.sleep_tracker.navigation.destinations.sleepRecordComposable
 import fi.lauriari.sleep_tracker.util.Constants.SLEEP_RECORD_SCREEN
 import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
+import fi.lauriari.sleep_tracker.viewmodels.SleepDatePickerSupportViewModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun SetupNavigation(
     navController: NavHostController,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    sleepDatePickerSupportViewModel: SleepDatePickerSupportViewModel
 ) {
 
     val screen = remember(navController) {
@@ -31,7 +33,8 @@ fun SetupNavigation(
             mainViewModel = mainViewModel
         )
         sleepRecordComposable(
-            mainViewModel = mainViewModel
+            mainViewModel = mainViewModel,
+            sleepDatePickerSupportViewModel = sleepDatePickerSupportViewModel
         )
     }
 

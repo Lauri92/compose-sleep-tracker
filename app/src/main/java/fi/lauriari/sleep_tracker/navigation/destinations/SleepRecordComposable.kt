@@ -7,16 +7,19 @@ import androidx.navigation.compose.composable
 import fi.lauriari.sleep_tracker.ui.screens.sleeprecord.SleepRecordScreen
 import fi.lauriari.sleep_tracker.util.Constants.SLEEP_RECORD_SCREEN
 import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
+import fi.lauriari.sleep_tracker.viewmodels.SleepDatePickerSupportViewModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 fun NavGraphBuilder.sleepRecordComposable(
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    sleepDatePickerSupportViewModel: SleepDatePickerSupportViewModel
 ) {
     composable(
         route = SLEEP_RECORD_SCREEN
     ) {
         SleepRecordScreen(
-            mainViewModel = mainViewModel
+            mainViewModel = mainViewModel,
+            sleepDatePickerSupportViewModel = sleepDatePickerSupportViewModel
         )
     }
 }

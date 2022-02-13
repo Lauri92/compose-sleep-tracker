@@ -2,6 +2,7 @@ package fi.lauriari.sleep_tracker.ui.screens.sleeprecord
 
 import android.app.DatePickerDialog
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fi.lauriari.sleep_tracker.viewmodels.SleepDatePickerSupportViewModel
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,7 +26,8 @@ import java.util.*
 @Composable
 fun SleepDatePicker(
     sleepDate: Long,
-    onSleepDateChanged: (Long) -> Unit
+    onSleepDateChanged: (Long) -> Unit,
+    sleepDatePickerSupportViewModel: SleepDatePickerSupportViewModel
 ) {
 
     val context = LocalContext.current
@@ -37,23 +40,37 @@ fun SleepDatePicker(
         color = Color.Cyan
     )
 
-    val now = Calendar.getInstance()
-    var mYear by remember { mutableStateOf(now.get(Calendar.YEAR)) }
-    var mMonth by remember { mutableStateOf(now.get(Calendar.MONTH)) }
-    var mDay by remember { mutableStateOf(now.get(Calendar.DAY_OF_MONTH)) }
-    onSleepDateChanged(formatDateToMilliseconds(mDay, mMonth, mYear))
+    onSleepDateChanged(
+        formatDateToMilliseconds(
+            sleepDatePickerSupportViewModel.mDay.value,
+            sleepDatePickerSupportViewModel.mMonth.value,
+            sleepDatePickerSupportViewModel.mYear.value
+        )
+    )
 
     val datePickerDialog =
-        DatePickerDialog(context, null, mYear, mMonth, mDay)
-            .also { datePickerDialog ->
-                datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
-                datePickerDialog.setOnDateSetListener { _, year: Int, month: Int, dayOfMonth: Int ->
-                    mDay = dayOfMonth
-                    mMonth = month
-                    mYear = year
-                    onSleepDateChanged(formatDateToMilliseconds(mDay, mMonth, mYear))
-                }
+        DatePickerDialog(
+            context,
+            null,
+            sleepDatePickerSupportViewModel.mYear.value,
+            sleepDatePickerSupportViewModel.mMonth.value,
+            sleepDatePickerSupportViewModel.mDay.value
+        ).also { datePickerDialog ->
+            datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
+            datePickerDialog.setOnDateSetListener { _, year: Int, month: Int, dayOfMonth: Int ->
+                sleepDatePickerSupportViewModel.mYear.value = year
+                sleepDatePickerSupportViewModel.mMonth.value = month
+                sleepDatePickerSupportViewModel.mDay.value = dayOfMonth
+
+                onSleepDateChanged(
+                    formatDateToMilliseconds(
+                        dayOfMonth,
+                        month,
+                        year,
+                    )
+                )
             }
+        }
 
     Column(
         modifier = Modifier
@@ -90,6 +107,7 @@ private fun formatDateToMilliseconds(mDay: Int, mMonth: Int, mYear: Int): Long {
     return formatter.parse("$mDay ${mMonth + 1} $mYear")?.time!!.toLong()
 }
 
+@Composable
 private fun formatMillisecondsToDate(milliseconds: Long): String {
     return DateFormat.getDateInstance().format(milliseconds)
 }

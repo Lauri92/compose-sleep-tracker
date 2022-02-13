@@ -1,9 +1,7 @@
 package fi.lauriari.sleep_tracker.ui.screens.sleeprecord
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -18,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fi.lauriari.sleep_tracker.components.SleepQualityDropDown
 import fi.lauriari.sleep_tracker.models.SleepRecord
+import fi.lauriari.sleep_tracker.viewmodels.SleepDatePickerSupportViewModel
 
 @Composable
 fun SleepRecordContent(
@@ -28,7 +27,8 @@ fun SleepRecordContent(
     sleepMinutes: Int,
     onSleepMinutesChanged: (Int) -> Unit,
     sleepDate: Long,
-    onSleepDateChanged: (Long) -> Unit
+    onSleepDateChanged: (Long) -> Unit,
+    sleepDatePickerSupportViewModel: SleepDatePickerSupportViewModel
 ) {
 
     val context = LocalContext.current
@@ -61,7 +61,8 @@ fun SleepRecordContent(
 
         SleepDatePicker(
             sleepDate = sleepDate,
-            onSleepDateChanged = onSleepDateChanged
+            onSleepDateChanged = onSleepDateChanged,
+            sleepDatePickerSupportViewModel = sleepDatePickerSupportViewModel
         )
 
         OutlinedButton(
