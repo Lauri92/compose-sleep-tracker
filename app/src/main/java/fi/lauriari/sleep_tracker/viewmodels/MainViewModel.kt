@@ -28,9 +28,6 @@ class MainViewModel @Inject constructor(
     val sleepMinutes: MutableState<Int> = mutableStateOf(0)
     val sleepDate: MutableState<Long> = mutableStateOf(0)
 
-    private val _allSleepRecords = MutableStateFlow<List<SleepRecord>>(emptyList())
-    val allSleepRecords: StateFlow<List<SleepRecord>> = _allSleepRecords
-
     fun addSleepRecord() {
         viewModelScope.launch(context = Dispatchers.IO) {
             repository.addSleepRecord(
@@ -44,7 +41,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getAllSleepRecords() {
+    private val _allSleepRecords = MutableStateFlow<List<SleepRecord>>(emptyList())
+    val allSleepRecords: StateFlow<List<SleepRecord>> = _allSleepRecords
+
+    private fun getAllSleepRecords() {
         viewModelScope.launch {
             repository.getAllSleepRecords.collect { sleepRecordList ->
                 _allSleepRecords.value = sleepRecordList

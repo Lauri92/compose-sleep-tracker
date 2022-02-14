@@ -9,10 +9,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun AddSleepRecordFab(navigateToSleepRecordScreen: () -> Unit) {
+fun AddSleepRecordFab(
+    navigateToSleepRecordScreen: (Int) -> Unit
+) {
     FloatingActionButton(
         onClick = {
-            navigateToSleepRecordScreen()
+            navigateToSleepRecordScreen(-1)
         },
         backgroundColor = Color.DarkGray
     ) {
@@ -22,13 +24,4 @@ fun AddSleepRecordFab(navigateToSleepRecordScreen: () -> Unit) {
             tint = Color.Magenta
         )
     }
-}
-
-
-@Preview
-@Composable
-fun AddSleepRecordFabPreview(
-    navigateToSleepRecordScreen: () -> Unit
-) {
-    AddSleepRecordFab(navigateToSleepRecordScreen)
 }

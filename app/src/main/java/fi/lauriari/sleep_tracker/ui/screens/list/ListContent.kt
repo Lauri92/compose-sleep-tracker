@@ -1,31 +1,25 @@
 package fi.lauriari.sleep_tracker.ui.screens.list
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import fi.lauriari.sleep_tracker.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +28,10 @@ import java.text.DateFormat
 
 
 @Composable
-fun ListContent(allSleepRecords: List<SleepRecord>) {
+fun ListContent(
+    allSleepRecords: List<SleepRecord>,
+    navigateToSleepRecordScreen: (Int) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -50,18 +47,44 @@ fun ListContent(allSleepRecords: List<SleepRecord>) {
                     sleepRecord.id
                 }
             ) { sleepRecord ->
-                SleepRecordListItem(sleepRecord = sleepRecord)
+                SleepRecordListItem(
+                    sleepRecord = sleepRecord,
+                    navigateToSleepRecordScreen = navigateToSleepRecordScreen
+                )
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SleepRecordListItem(
-    sleepRecord: SleepRecord
+    sleepRecord: SleepRecord,
+    navigateToSleepRecordScreen: (Int) -> Unit
 ) {
 
     val context = LocalContext.current
+
+    val image: Int = when (sleepRecord.sleepQuality) {
+        "Poor" -> {
+            R.drawable.ic_sleep_1
+        }
+        "Fair" -> {
+            R.drawable.ic_sleep_2
+        }
+        "Average" -> {
+            R.drawable.ic_sleep_3
+        }
+        "Good" -> {
+            R.drawable.ic_sleep_4
+        }
+        "Very Good" -> {
+            R.drawable.ic_sleep_5
+        }
+        else -> {
+            R.drawable.ic_sleep_0
+        }
+    }
 
     Surface(
         modifier = Modifier
@@ -69,15 +92,18 @@ fun SleepRecordListItem(
             .border(
                 width = 2.dp,
                 color = Color.Green,
-                shape = CircleShape
+                shape = RectangleShape
             ),
         color = Color.Gray,
-        shape = CircleShape,
-        elevation = 3.dp
+        shape = RectangleShape,
+        elevation = 3.dp,
+        onClick = {
+
+        }
     ) {
         Column(
             modifier = Modifier
-                .padding(all = 20.dp)
+                .padding(all = 5.dp)
                 .fillMaxWidth()
         ) {
             Row {
@@ -95,7 +121,8 @@ fun SleepRecordListItem(
                         Text(
                             text = "Date recorded: ${formatMillisecondsToDate(sleepRecord.sleepDate)}",
                             fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            fontStyle = FontStyle.Italic
                         )
                     }
                     Text(text = "Time slept: ${sleepRecord.sleepHours} Hours and ${sleepRecord.sleepMinutes} Minutes")
@@ -115,6 +142,7 @@ fun SleepRecordListItem(
                         }
                         IconButton(
                             onClick = {
+                                navigateToSleepRecordScreen(sleepRecord.id)
                             }
                         ) {
                             Icon(
@@ -123,27 +151,6 @@ fun SleepRecordListItem(
                                 tint = Color.Blue
                             )
                         }
-                    }
-                }
-
-                val image: Int = when (sleepRecord.sleepQuality) {
-                    "Poor" -> {
-                        R.drawable.ic_sleep_1
-                    }
-                    "Fair" -> {
-                        R.drawable.ic_sleep_2
-                    }
-                    "Average" -> {
-                        R.drawable.ic_sleep_3
-                    }
-                    "Good" -> {
-                        R.drawable.ic_sleep_4
-                    }
-                    "Very Good" -> {
-                        R.drawable.ic_sleep_5
-                    }
-                    else -> {
-                        R.drawable.ic_sleep_0
                     }
                 }
 
@@ -159,7 +166,7 @@ fun SleepRecordListItem(
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(all = 5.dp)
+                            .padding(start = 15.dp, top = 20.dp, end = 15.dp)
                     )
                 }
             }

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface SleepRecordDao {
 
-    @Query("SELECT * FROM sleep_record_table ORDER BY sleepDate")
+    @Query("SELECT * FROM sleep_record_table ORDER BY sleepDate DESC")
     fun getAllSleepRecords(): Flow<List<SleepRecord>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

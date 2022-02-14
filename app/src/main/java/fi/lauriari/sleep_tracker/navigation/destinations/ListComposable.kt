@@ -8,7 +8,7 @@ import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
 
 fun NavGraphBuilder.listComposable(
     mainViewModel: MainViewModel,
-    navigateToSleepRecordScreen: () -> Unit
+    navigateToSleepRecordScreen: (Int) -> Unit
 ) {
     composable(
         route = LIST_SCREEN

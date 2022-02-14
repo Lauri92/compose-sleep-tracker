@@ -1,7 +1,6 @@
 package fi.lauriari.sleep_tracker.ui.screens.list
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.material.Scaffold
 
@@ -12,14 +11,17 @@ import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
 @Composable
 fun ListScreen(
     mainViewModel: MainViewModel,
-    navigateToSleepRecordScreen: () -> Unit
+    navigateToSleepRecordScreen: (Int) -> Unit
 ) {
 
     val allSleepRecords by mainViewModel.allSleepRecords.collectAsState()
 
     Scaffold(
         content = {
-            ListContent(allSleepRecords = allSleepRecords)
+            ListContent(
+                allSleepRecords = allSleepRecords,
+                navigateToSleepRecordScreen = navigateToSleepRecordScreen
+            )
         },
         floatingActionButton = {
             AddSleepRecordFab(

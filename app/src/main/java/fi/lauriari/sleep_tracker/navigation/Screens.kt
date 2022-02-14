@@ -8,8 +8,8 @@ class Screens(navController: NavHostController) {
         navController.navigate(route = "list")
     }
 
-    val sleepRecord: () -> Unit = {
-        navController.navigate(route = "sleeprecord")
+    val sleepRecord: (Int) -> Unit = { sleepRecordId ->
+        navController.navigate(route = "sleeprecord/$sleepRecordId")
     }
 
 }
