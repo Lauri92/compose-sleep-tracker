@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fi.lauriari.sleep_tracker.components.DeleteAlertDialog
 import fi.lauriari.sleep_tracker.models.SleepRecord
+import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
 import java.text.DateFormat
 
 
@@ -32,7 +33,8 @@ import java.text.DateFormat
 fun ListContent(
     allSleepRecords: List<SleepRecord>,
     navigateToSleepRecordScreen: (Int) -> Unit,
-    deleteSleepRecord: () -> Unit
+    deleteSleepRecord: () -> Unit,
+    mainViewModel: MainViewModel
 ) {
     Column(
         modifier = Modifier
@@ -50,6 +52,7 @@ fun ListContent(
                 }
             ) { sleepRecord ->
                 SleepRecordListItem(
+                    mainViewModel = mainViewModel,
                     sleepRecord = sleepRecord,
                     navigateToSleepRecordScreen = navigateToSleepRecordScreen,
                     deleteSleepRecord = deleteSleepRecord
@@ -64,7 +67,8 @@ fun ListContent(
 fun SleepRecordListItem(
     sleepRecord: SleepRecord,
     navigateToSleepRecordScreen: (Int) -> Unit,
-    deleteSleepRecord: () -> Unit
+    deleteSleepRecord: () -> Unit,
+    mainViewModel: MainViewModel
 ) {
 
     val context = LocalContext.current
@@ -144,6 +148,7 @@ fun SleepRecordListItem(
                     ) {
                         IconButton(
                             onClick = {
+                                mainViewModel.updateSleepRecordInputs(sleepRecord)
                                 openDialog = true
                             }
                         ) {

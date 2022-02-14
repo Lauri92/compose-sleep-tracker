@@ -19,6 +19,7 @@ fun ListScreen(
     Scaffold(
         content = {
             ListContent(
+                mainViewModel = mainViewModel,
                 allSleepRecords = allSleepRecords,
                 navigateToSleepRecordScreen = navigateToSleepRecordScreen,
                 deleteSleepRecord = {
