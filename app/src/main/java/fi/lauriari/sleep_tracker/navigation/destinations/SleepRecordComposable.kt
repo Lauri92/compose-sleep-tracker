@@ -19,6 +19,7 @@ import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
 @RequiresApi(Build.VERSION_CODES.N)
 fun NavGraphBuilder.sleepRecordComposable(
     mainViewModel: MainViewModel,
+    navigateToListScreen: () -> Unit,
 ) {
     composable(
         route = SLEEP_RECORD_SCREEN,
@@ -46,6 +47,7 @@ fun NavGraphBuilder.sleepRecordComposable(
 
 
         SleepRecordScreen(
+            navigateToListScreen = navigateToListScreen,
             mainViewModel = mainViewModel,
         )
     }

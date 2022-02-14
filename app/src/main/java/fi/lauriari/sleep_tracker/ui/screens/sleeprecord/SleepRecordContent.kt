@@ -18,6 +18,7 @@ import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
 
 @Composable
 fun SleepRecordContent(
+    navigateToListScreen: () -> Unit,
     mainViewModel: MainViewModel,
     sleepQuality: String,
     onSleepQualitySelected: (String) -> Unit,
@@ -28,7 +29,7 @@ fun SleepRecordContent(
     sleepDate: Long,
     onSleepDateChanged: (Long) -> Unit,
     addSleepRecord: () -> Unit,
-    updateSleepRecord: () -> Unit
+    updateSleepRecord: () -> Unit,
 ) {
 
     val context = LocalContext.current
@@ -66,15 +67,18 @@ fun SleepRecordContent(
         )
 
         if (mainViewModel.id.value == 0) {
-            AddButton(sleepQuality, addSleepRecord)
+            AddButton(sleepQuality, addSleepRecord, navigateToListScreen)
         } else {
-            UpdateButton(updateSleepRecord)
+            UpdateButton(updateSleepRecord, navigateToListScreen)
         }
     }
 }
 
 @Composable
-fun UpdateButton(updateSleepRecord: () -> Unit) {
+fun UpdateButton(
+    updateSleepRecord: () -> Unit,
+    navigateToListScreen: () -> Unit
+) {
     OutlinedButton(
         modifier = Modifier
             .padding(
@@ -85,6 +89,7 @@ fun UpdateButton(updateSleepRecord: () -> Unit) {
             .height(100.dp),
         onClick = {
             updateSleepRecord()
+            navigateToListScreen()
         }) {
         Text(
             fontSize = 25.sp,
@@ -96,7 +101,8 @@ fun UpdateButton(updateSleepRecord: () -> Unit) {
 @Composable
 fun AddButton(
     sleepQuality: String,
-    addSleepRecord: () -> Unit
+    addSleepRecord: () -> Unit,
+    navigateToListScreen: () -> Unit
 ) {
     OutlinedButton(
         modifier = Modifier
@@ -109,6 +115,7 @@ fun AddButton(
         enabled = sleepQuality != "Select Sleep Quality",
         onClick = {
             addSleepRecord()
+            navigateToListScreen()
         }) {
         Text(
             fontSize = 25.sp,

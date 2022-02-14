@@ -31,6 +31,7 @@ fun SetupNavigation(
             mainViewModel = mainViewModel
         )
         sleepRecordComposable(
+            navigateToListScreen = screen.list,
             mainViewModel = mainViewModel,
         )
     }
