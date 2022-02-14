@@ -18,9 +18,6 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
     private val mainViewModel: MainViewModel by viewModels()
-    private val sleepDatePickerSupportViewModel: SleepDatePickerSupportViewModel by viewModels() {
-        SavedStateViewModelFactory(application, this)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +27,6 @@ class MainActivity : ComponentActivity() {
                 SetupNavigation(
                     navController = navController,
                     mainViewModel = mainViewModel,
-                    sleepDatePickerSupportViewModel = sleepDatePickerSupportViewModel
                 )
             }
         }

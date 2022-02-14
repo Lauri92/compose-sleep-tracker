@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,10 +16,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fi.lauriari.sleep_tracker.components.SleepQualityDropDown
 import fi.lauriari.sleep_tracker.models.SleepRecord
-import fi.lauriari.sleep_tracker.viewmodels.SleepDatePickerSupportViewModel
+import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
 
 @Composable
 fun SleepRecordContent(
+    mainViewModel: MainViewModel,
     sleepQuality: String,
     onSleepQualitySelected: (String) -> Unit,
     sleepHours: Int,
@@ -29,7 +29,6 @@ fun SleepRecordContent(
     onSleepMinutesChanged: (Int) -> Unit,
     sleepDate: Long,
     onSleepDateChanged: (Long) -> Unit,
-    sleepDatePickerSupportViewModel: SleepDatePickerSupportViewModel,
     addSleepRecord: () -> Unit,
 ) {
 
@@ -64,7 +63,7 @@ fun SleepRecordContent(
         SleepDatePicker(
             sleepDate = sleepDate,
             onSleepDateChanged = onSleepDateChanged,
-            sleepDatePickerSupportViewModel = sleepDatePickerSupportViewModel
+            mainViewModel = mainViewModel
         )
 
         OutlinedButton(

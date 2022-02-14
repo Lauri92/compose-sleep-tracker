@@ -12,7 +12,6 @@ import fi.lauriari.sleep_tracker.viewmodels.SleepDatePickerSupportViewModel
 @Composable
 fun SleepRecordScreen(
     mainViewModel: MainViewModel,
-    sleepDatePickerSupportViewModel: SleepDatePickerSupportViewModel
 ) {
 
     val sleepQuality: String by mainViewModel.sleepQuality
@@ -40,7 +39,7 @@ fun SleepRecordScreen(
                 onSleepDateChanged = {
                     mainViewModel.sleepDate.value = it
                 },
-                sleepDatePickerSupportViewModel = sleepDatePickerSupportViewModel,
+                mainViewModel = mainViewModel,
                 addSleepRecord = {
                     mainViewModel.addSleepRecord()
                 },

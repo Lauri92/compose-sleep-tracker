@@ -3,6 +3,9 @@ package fi.lauriari.sleep_tracker.navigation.destinations
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -18,7 +21,6 @@ import kotlin.coroutines.coroutineContext
 @RequiresApi(Build.VERSION_CODES.N)
 fun NavGraphBuilder.sleepRecordComposable(
     mainViewModel: MainViewModel,
-    sleepDatePickerSupportViewModel: SleepDatePickerSupportViewModel
 ) {
     composable(
         route = SLEEP_RECORD_SCREEN,
@@ -32,9 +34,21 @@ fun NavGraphBuilder.sleepRecordComposable(
         val sleepRecordId = navBackStackEntry.arguments!!.getInt(SLEEP_RECORD_KEY)
         Toast.makeText(context, sleepRecordId.toString(), Toast.LENGTH_SHORT).show()
 
+        LaunchedEffect(key1 = sleepRecordId) {
+            mainViewModel.getSelectedSleepRecord(sleepRecordId = sleepRecordId)
+        }
+
+        val selectedSleepRecord by mainViewModel.selectedSleepRecord.collectAsState()
+
+        LaunchedEffect(key1 = selectedSleepRecord) {
+            if (selectedSleepRecord != null || sleepRecordId == -1) {
+                mainViewModel.updateSleepRecordInputs(selectedSleepRecord = selectedSleepRecord)
+            }
+        }
+
+
         SleepRecordScreen(
             mainViewModel = mainViewModel,
-            sleepDatePickerSupportViewModel = sleepDatePickerSupportViewModel
         )
     }
 }

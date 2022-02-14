@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
 import fi.lauriari.sleep_tracker.viewmodels.SleepDatePickerSupportViewModel
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -27,7 +28,7 @@ import java.util.*
 fun SleepDatePicker(
     sleepDate: Long,
     onSleepDateChanged: (Long) -> Unit,
-    sleepDatePickerSupportViewModel: SleepDatePickerSupportViewModel
+    mainViewModel: MainViewModel,
 ) {
 
     val context = LocalContext.current
@@ -42,9 +43,9 @@ fun SleepDatePicker(
 
     onSleepDateChanged(
         formatDateToMilliseconds(
-            sleepDatePickerSupportViewModel.mDay.value,
-            sleepDatePickerSupportViewModel.mMonth.value,
-            sleepDatePickerSupportViewModel.mYear.value
+            mainViewModel.mDay.value,
+            mainViewModel.mMonth.value,
+            mainViewModel.mYear.value
         )
     )
 
@@ -52,15 +53,15 @@ fun SleepDatePicker(
         DatePickerDialog(
             context,
             null,
-            sleepDatePickerSupportViewModel.mYear.value,
-            sleepDatePickerSupportViewModel.mMonth.value,
-            sleepDatePickerSupportViewModel.mDay.value
+            mainViewModel.mYear.value,
+            mainViewModel.mMonth.value,
+            mainViewModel.mDay.value
         ).also { datePickerDialog ->
             datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
             datePickerDialog.setOnDateSetListener { _, year: Int, month: Int, dayOfMonth: Int ->
-                sleepDatePickerSupportViewModel.mYear.value = year
-                sleepDatePickerSupportViewModel.mMonth.value = month
-                sleepDatePickerSupportViewModel.mDay.value = dayOfMonth
+                mainViewModel.mYear.value = year
+                mainViewModel.mMonth.value = month
+                mainViewModel.mDay.value = dayOfMonth
 
                 onSleepDateChanged(
                     formatDateToMilliseconds(
