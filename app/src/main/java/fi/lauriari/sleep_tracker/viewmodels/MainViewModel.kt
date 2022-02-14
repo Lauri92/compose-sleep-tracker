@@ -9,12 +9,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fi.lauriari.sleep_tracker.models.SleepRecord
 import fi.lauriari.sleep_tracker.repository.SleepRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
@@ -38,14 +38,34 @@ class MainViewModel @Inject constructor(
     var month: MutableState<Int> = mutableStateOf(now.get(Calendar.MONTH))
     var day: MutableState<Int> = mutableStateOf(now.get(Calendar.DAY_OF_MONTH))
 
+    var openDuplicateDialog: MutableState<Boolean> = mutableStateOf(false)
+
+
+    fun checkDuplicate(): Boolean {
+        var checkDuplicateValue: SleepRecord?
+        runBlocking {
+            checkDuplicateValue =
+                withContext(Dispatchers.Default) {
+                    repository.getSleepRecordBySleepDate(sleepDate.value)
+                }
+        }
+        return if (checkDuplicateValue is SleepRecord) {
+            openDuplicateDialog.value = true
+            true
+        } else {
+            false
+        }
+    }
 
     fun addSleepRecord() {
         viewModelScope.launch(context = Dispatchers.IO) {
 
-            val checkDuplicate = async { repository.getSleepRecordBySleepDate(sleepDate.value) }
-            val possibleDuplicate = checkDuplicate.await()
+            val checkDuplicate =
+                withContext(Dispatchers.Default) {
+                    repository.getSleepRecordBySleepDate(sleepDate.value)
+                }
 
-            if (possibleDuplicate?.sleepDate == null) {
+            if (checkDuplicate?.sleepDate == null) {
                 repository.addSleepRecord(
                     SleepRecord(
                         sleepQuality = sleepQuality.value,
@@ -54,6 +74,8 @@ class MainViewModel @Inject constructor(
                         sleepDate = sleepDate.value
                     )
                 )
+            } else {
+                openDuplicateDialog.value = true
             }
         }
     }

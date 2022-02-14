@@ -31,7 +31,6 @@ fun NavGraphBuilder.sleepRecordComposable(
         val context = LocalContext.current
 
         val sleepRecordId = navBackStackEntry.arguments!!.getInt(SLEEP_RECORD_KEY)
-        Toast.makeText(context, sleepRecordId.toString(), Toast.LENGTH_SHORT).show()
 
         LaunchedEffect(key1 = sleepRecordId) {
             mainViewModel.getSelectedSleepRecord(sleepRecordId = sleepRecordId)

@@ -1,18 +1,20 @@
 package fi.lauriari.sleep_tracker.ui.screens.sleeprecord
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fi.lauriari.sleep_tracker.components.DuplicateAlertDialog
 import fi.lauriari.sleep_tracker.components.SleepQualityDropDown
 import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
 
@@ -33,6 +35,14 @@ fun SleepRecordContent(
 ) {
 
     val context = LocalContext.current
+
+    DuplicateAlertDialog(
+        title = "Duplicate",
+        message = "Check your date input, duplicate dates are not allowed!",
+        openDialog = mainViewModel.openDuplicateDialog.value,
+        closeDialog = { mainViewModel.openDuplicateDialog.value = false }
+    )
+
 
     Column(
         modifier = Modifier
@@ -67,7 +77,7 @@ fun SleepRecordContent(
         )
 
         if (mainViewModel.id.value == 0) {
-            AddButton(sleepQuality, addSleepRecord, navigateToListScreen)
+            AddButton(sleepQuality, addSleepRecord, navigateToListScreen, mainViewModel)
         } else {
             UpdateButton(updateSleepRecord, navigateToListScreen)
         }
@@ -102,7 +112,8 @@ fun UpdateButton(
 fun AddButton(
     sleepQuality: String,
     addSleepRecord: () -> Unit,
-    navigateToListScreen: () -> Unit
+    navigateToListScreen: () -> Unit,
+    mainViewModel: MainViewModel
 ) {
     OutlinedButton(
         modifier = Modifier
@@ -114,8 +125,12 @@ fun AddButton(
             .height(100.dp),
         enabled = sleepQuality != "Select Sleep Quality",
         onClick = {
-            addSleepRecord()
-            navigateToListScreen()
+            val isDuplicate = mainViewModel.checkDuplicate()
+            Log.d("vmtest", "in UI: ${isDuplicate}")
+            if (!isDuplicate) {
+                addSleepRecord()
+                navigateToListScreen()
+            }
         }) {
         Text(
             fontSize = 25.sp,

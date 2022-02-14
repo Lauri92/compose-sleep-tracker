@@ -1,5 +1,6 @@
 package fi.lauriari.sleep_tracker.repository
 
+import android.util.Log
 import dagger.hilt.android.scopes.ViewModelScoped
 import fi.lauriari.sleep_tracker.daos.SleepRecordDao
 import fi.lauriari.sleep_tracker.models.SleepRecord
@@ -26,6 +27,7 @@ class SleepRepository @Inject constructor(
     }
 
     suspend fun updateSleepRecord(sleepRecord: SleepRecord) {
+        Log.d("repotest", "Got into repo")
         sleepRecordDao.updateSleepRecord(sleepRecord)
     }
 
