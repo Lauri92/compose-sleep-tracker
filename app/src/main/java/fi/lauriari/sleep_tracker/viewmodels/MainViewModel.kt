@@ -9,6 +9,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fi.lauriari.sleep_tracker.models.SleepRecord
 import fi.lauriari.sleep_tracker.repository.SleepRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -36,16 +38,23 @@ class MainViewModel @Inject constructor(
     var month: MutableState<Int> = mutableStateOf(now.get(Calendar.MONTH))
     var day: MutableState<Int> = mutableStateOf(now.get(Calendar.DAY_OF_MONTH))
 
+
     fun addSleepRecord() {
         viewModelScope.launch(context = Dispatchers.IO) {
-            repository.addSleepRecord(
-                SleepRecord(
-                    sleepQuality = sleepQuality.value,
-                    sleepHours = sleepHours.value,
-                    sleepMinutes = sleepMinutes.value,
-                    sleepDate = sleepDate.value
+
+            val checkDuplicate = async { repository.getSleepRecordBySleepDate(sleepDate.value) }
+            val possibleDuplicate = checkDuplicate.await()
+
+            if (possibleDuplicate?.sleepDate == null) {
+                repository.addSleepRecord(
+                    SleepRecord(
+                        sleepQuality = sleepQuality.value,
+                        sleepHours = sleepHours.value,
+                        sleepMinutes = sleepMinutes.value,
+                        sleepDate = sleepDate.value
+                    )
                 )
-            )
+            }
         }
     }
 

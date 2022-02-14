@@ -21,6 +21,10 @@ class SleepRepository @Inject constructor(
         return sleepRecordDao.getSelectedSleepRecord(sleepRecordId)
     }
 
+    fun getSleepRecordBySleepDate(sleepDate: Long): SleepRecord? {
+        return sleepRecordDao.getSleepRecordBySleepDate(sleepDate)
+    }
+
     suspend fun updateSleepRecord(sleepRecord: SleepRecord) {
         sleepRecordDao.updateSleepRecord(sleepRecord)
     }

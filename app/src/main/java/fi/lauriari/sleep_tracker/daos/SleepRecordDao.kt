@@ -13,6 +13,9 @@ interface SleepRecordDao {
     @Query("SELECT * FROM sleep_record_table WHERE id=:sleepRecordId")
     fun getSelectedSleepRecord(sleepRecordId: Int): Flow<SleepRecord>
 
+    @Query("SELECT * FROM sleep_record_table WHERE sleepdate=:sleepDate")
+    fun getSleepRecordBySleepDate(sleepDate: Long): SleepRecord?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addSleepRecord(sleepRecord: SleepRecord)
 
