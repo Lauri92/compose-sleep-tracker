@@ -1,5 +1,7 @@
 package fi.lauriari.sleep_tracker.ui.screens.list
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import fi.lauriari.sleep_tracker.R
 import androidx.compose.foundation.background
@@ -29,6 +31,7 @@ import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
 import java.text.DateFormat
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun ListContent(
     allSleepRecords: List<SleepRecord>,
@@ -51,12 +54,34 @@ fun ListContent(
                     sleepRecord.id
                 }
             ) { sleepRecord ->
-                SleepRecordListItem(
-                    mainViewModel = mainViewModel,
-                    sleepRecord = sleepRecord,
-                    navigateToSleepRecordScreen = navigateToSleepRecordScreen,
-                    deleteSleepRecord = deleteSleepRecord
-                )
+
+
+                var itemAppeared by remember { mutableStateOf(false) }
+                LaunchedEffect(key1 = true) {
+                    itemAppeared = true
+                }
+
+                AnimatedVisibility(
+                    visible = itemAppeared,
+                    enter = slideInVertically(
+                        animationSpec = tween(
+                            durationMillis = 300
+                        )
+                    ),
+                    exit = slideOutVertically(
+                        animationSpec = tween(
+                            durationMillis = 300
+                        )
+                    )
+                ) {
+                    SleepRecordListItem(
+                        mainViewModel = mainViewModel,
+                        sleepRecord = sleepRecord,
+                        navigateToSleepRecordScreen = navigateToSleepRecordScreen,
+                        deleteSleepRecord = deleteSleepRecord
+                    )
+                }
+
             }
         }
     }

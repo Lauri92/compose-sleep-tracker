@@ -126,7 +126,6 @@ fun AddButton(
         enabled = sleepQuality != "Select Sleep Quality",
         onClick = {
             val isDuplicate = mainViewModel.checkDuplicate()
-            Log.d("vmtest", "in UI: ${isDuplicate}")
             if (!isDuplicate) {
                 addSleepRecord()
                 navigateToListScreen()
