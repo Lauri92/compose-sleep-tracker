@@ -1,6 +1,5 @@
 package fi.lauriari.sleep_tracker.ui.screens.sleeprecord
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -15,7 +14,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fi.lauriari.sleep_tracker.components.SleepQualityDropDown
-import fi.lauriari.sleep_tracker.models.SleepRecord
 import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
 
 @Composable
@@ -30,6 +28,7 @@ fun SleepRecordContent(
     sleepDate: Long,
     onSleepDateChanged: (Long) -> Unit,
     addSleepRecord: () -> Unit,
+    updateSleepRecord: () -> Unit
 ) {
 
     val context = LocalContext.current
@@ -66,30 +65,54 @@ fun SleepRecordContent(
             mainViewModel = mainViewModel
         )
 
-        OutlinedButton(
-            modifier = Modifier
-                .padding(
-                    vertical = 50.dp,
-                    horizontal = 20.dp
-                )
-                .fillMaxWidth()
-                .height(100.dp),
-            enabled = sleepQuality != "Select Sleep Quality",
-            onClick = {
-                val sleepRecord = SleepRecord(
-                    sleepQuality = sleepQuality,
-                    sleepHours = sleepHours,
-                    sleepMinutes = sleepMinutes,
-                    sleepDate = sleepDate
-                )
-                Log.d("sleepRecordtest", sleepRecord.toString())
-                addSleepRecord()
-            }) {
-            Text(
-                fontSize = 25.sp,
-                text = "Insert Sleep Record"
-            )
+        if (mainViewModel.id.value == 0) {
+            AddButton(sleepQuality, addSleepRecord)
+        } else {
+            UpdateButton(updateSleepRecord)
         }
+    }
+}
 
+@Composable
+fun UpdateButton(updateSleepRecord: () -> Unit) {
+    OutlinedButton(
+        modifier = Modifier
+            .padding(
+                vertical = 50.dp,
+                horizontal = 20.dp
+            )
+            .fillMaxWidth()
+            .height(100.dp),
+        onClick = {
+            updateSleepRecord()
+        }) {
+        Text(
+            fontSize = 25.sp,
+            text = "Update Sleep Record"
+        )
+    }
+}
+
+@Composable
+fun AddButton(
+    sleepQuality: String,
+    addSleepRecord: () -> Unit
+) {
+    OutlinedButton(
+        modifier = Modifier
+            .padding(
+                vertical = 50.dp,
+                horizontal = 20.dp
+            )
+            .fillMaxWidth()
+            .height(100.dp),
+        enabled = sleepQuality != "Select Sleep Quality",
+        onClick = {
+            addSleepRecord()
+        }) {
+        Text(
+            fontSize = 25.sp,
+            text = "Insert Sleep Record"
+        )
     }
 }

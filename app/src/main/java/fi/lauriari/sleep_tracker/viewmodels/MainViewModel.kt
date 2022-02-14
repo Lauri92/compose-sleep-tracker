@@ -25,7 +25,7 @@ class MainViewModel @Inject constructor(
         getAllSleepRecords()
     }
 
-    private val id: MutableState<Int> = mutableStateOf(0)
+    val id: MutableState<Int> = mutableStateOf(0)
     val sleepQuality: MutableState<String> = mutableStateOf("Select Sleep Quality")
     val sleepHours: MutableState<Int> = mutableStateOf(3)
     val sleepMinutes: MutableState<Int> = mutableStateOf(0)
@@ -64,10 +64,24 @@ class MainViewModel @Inject constructor(
     val selectedSleepRecord: StateFlow<SleepRecord?> = _selectedSleepRecord
 
     fun getSelectedSleepRecord(sleepRecordId: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.getSelectedSleepRecord(sleepRecordId).collect { sleepRecord ->
                 _selectedSleepRecord.value = sleepRecord
             }
+        }
+    }
+
+    fun updateSleepRecord() {
+        viewModelScope.launch(context = Dispatchers.IO) {
+            repository.updateSleepRecord(
+                SleepRecord(
+                    id = id.value,
+                    sleepQuality = sleepQuality.value,
+                    sleepHours = sleepHours.value,
+                    sleepMinutes = sleepMinutes.value,
+                    sleepDate = sleepDate.value
+                )
+            )
         }
     }
 

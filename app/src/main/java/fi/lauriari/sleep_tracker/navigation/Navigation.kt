@@ -9,9 +9,7 @@ import androidx.navigation.compose.NavHost
 import fi.lauriari.sleep_tracker.navigation.destinations.listComposable
 import fi.lauriari.sleep_tracker.navigation.destinations.sleepRecordComposable
 import fi.lauriari.sleep_tracker.util.Constants.LIST_SCREEN
-import fi.lauriari.sleep_tracker.util.Constants.SLEEP_RECORD_SCREEN
 import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
-import fi.lauriari.sleep_tracker.viewmodels.SleepDatePickerSupportViewModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable

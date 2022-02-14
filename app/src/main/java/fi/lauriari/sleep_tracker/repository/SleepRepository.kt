@@ -20,4 +20,8 @@ class SleepRepository @Inject constructor(
     fun getSelectedSleepRecord(sleepRecordId: Int): Flow<SleepRecord> {
         return sleepRecordDao.getSelectedSleepRecord(sleepRecordId)
     }
+
+    fun updateSleepRecord(sleepRecord: SleepRecord) {
+        sleepRecordDao.updateSleepRecord(sleepRecord)
+    }
 }

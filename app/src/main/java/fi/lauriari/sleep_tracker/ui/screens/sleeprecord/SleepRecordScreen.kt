@@ -6,7 +6,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
-import fi.lauriari.sleep_tracker.viewmodels.SleepDatePickerSupportViewModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
@@ -43,6 +42,9 @@ fun SleepRecordScreen(
                 addSleepRecord = {
                     mainViewModel.addSleepRecord()
                 },
+                updateSleepRecord = {
+                    mainViewModel.updateSleepRecord()
+                }
             )
         }
     )
