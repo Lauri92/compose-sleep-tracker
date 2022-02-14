@@ -32,9 +32,9 @@ class MainViewModel @Inject constructor(
     val sleepDate: MutableState<Long> = mutableStateOf(0)
 
     private val now: Calendar = Calendar.getInstance()
-    var mYear: MutableState<Int> = mutableStateOf(now.get(Calendar.YEAR))
-    var mMonth: MutableState<Int> = mutableStateOf(now.get(Calendar.MONTH))
-    var mDay: MutableState<Int> = mutableStateOf(now.get(Calendar.DAY_OF_MONTH))
+    var year: MutableState<Int> = mutableStateOf(now.get(Calendar.YEAR))
+    var month: MutableState<Int> = mutableStateOf(now.get(Calendar.MONTH))
+    var day: MutableState<Int> = mutableStateOf(now.get(Calendar.DAY_OF_MONTH))
 
     fun addSleepRecord() {
         viewModelScope.launch(context = Dispatchers.IO) {
@@ -79,12 +79,24 @@ class MainViewModel @Inject constructor(
             sleepHours.value = selectedSleepRecord.sleepHours
             sleepMinutes.value = selectedSleepRecord.sleepMinutes
             sleepDate.value = selectedSleepRecord.sleepDate
+            setSleepRecordDateValues(sleepDate.value)
         } else {
             id.value = 0
             sleepQuality.value = "Select Sleep Quality"
             sleepHours.value = 3
             sleepMinutes.value = 0
             sleepDate.value = 0
+            year.value = now.get(Calendar.YEAR)
+            month.value = now.get(Calendar.MONTH)
+            day.value = now.get(Calendar.DAY_OF_MONTH)
         }
+    }
+
+    private fun setSleepRecordDateValues(milliseconds: Long) {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = milliseconds
+        year.value = calendar[Calendar.YEAR]
+        month.value = calendar[Calendar.MONTH]
+        day.value = calendar[Calendar.DAY_OF_MONTH]
     }
 }

@@ -2,7 +2,6 @@ package fi.lauriari.sleep_tracker.ui.screens.sleeprecord
 
 import android.app.DatePickerDialog
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -18,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
-import fi.lauriari.sleep_tracker.viewmodels.SleepDatePickerSupportViewModel
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -43,9 +41,9 @@ fun SleepDatePicker(
 
     onSleepDateChanged(
         formatDateToMilliseconds(
-            mainViewModel.mDay.value,
-            mainViewModel.mMonth.value,
-            mainViewModel.mYear.value
+            mainViewModel.day.value,
+            mainViewModel.month.value,
+            mainViewModel.year.value
         )
     )
 
@@ -53,15 +51,15 @@ fun SleepDatePicker(
         DatePickerDialog(
             context,
             null,
-            mainViewModel.mYear.value,
-            mainViewModel.mMonth.value,
-            mainViewModel.mDay.value
+            mainViewModel.year.value,
+            mainViewModel.month.value,
+            mainViewModel.day.value
         ).also { datePickerDialog ->
             datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
             datePickerDialog.setOnDateSetListener { _, year: Int, month: Int, dayOfMonth: Int ->
-                mainViewModel.mYear.value = year
-                mainViewModel.mMonth.value = month
-                mainViewModel.mDay.value = dayOfMonth
+                mainViewModel.year.value = year
+                mainViewModel.month.value = month
+                mainViewModel.day.value = dayOfMonth
 
                 onSleepDateChanged(
                     formatDateToMilliseconds(
