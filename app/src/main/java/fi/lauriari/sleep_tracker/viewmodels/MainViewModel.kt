@@ -85,6 +85,20 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun deleteSleepRecord() {
+        viewModelScope.launch(context = Dispatchers.IO) {
+            repository.deleteSleepRecord(
+                SleepRecord(
+                    id = id.value,
+                    sleepQuality = sleepQuality.value,
+                    sleepHours = sleepHours.value,
+                    sleepMinutes = sleepMinutes.value,
+                    sleepDate = sleepDate.value
+                )
+            )
+        }
+    }
+
     fun updateSleepRecordInputs(selectedSleepRecord: SleepRecord?) {
         Log.d("updatetest", "${selectedSleepRecord?.sleepDate}")
         if (selectedSleepRecord != null) {

@@ -11,7 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fi.lauriari.sleep_tracker.components.DeleteAlertDialog
 import fi.lauriari.sleep_tracker.models.SleepRecord
 import java.text.DateFormat
 
@@ -30,7 +31,8 @@ import java.text.DateFormat
 @Composable
 fun ListContent(
     allSleepRecords: List<SleepRecord>,
-    navigateToSleepRecordScreen: (Int) -> Unit
+    navigateToSleepRecordScreen: (Int) -> Unit,
+    deleteSleepRecord: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -49,7 +51,8 @@ fun ListContent(
             ) { sleepRecord ->
                 SleepRecordListItem(
                     sleepRecord = sleepRecord,
-                    navigateToSleepRecordScreen = navigateToSleepRecordScreen
+                    navigateToSleepRecordScreen = navigateToSleepRecordScreen,
+                    deleteSleepRecord = deleteSleepRecord
                 )
             }
         }
@@ -60,10 +63,22 @@ fun ListContent(
 @Composable
 fun SleepRecordListItem(
     sleepRecord: SleepRecord,
-    navigateToSleepRecordScreen: (Int) -> Unit
+    navigateToSleepRecordScreen: (Int) -> Unit,
+    deleteSleepRecord: () -> Unit
 ) {
 
     val context = LocalContext.current
+
+    var openDialog by remember { mutableStateOf(false) }
+
+    DeleteAlertDialog(
+        title = formatMillisecondsToDate(sleepRecord.sleepDate),
+        message = "Delete sleep recording from ${formatMillisecondsToDate(sleepRecord.sleepDate)}?",
+        openDialog = openDialog,
+        closeDialog = { openDialog = false },
+        onYesClicked = deleteSleepRecord
+
+    )
 
     val image: Int = when (sleepRecord.sleepQuality) {
         "Poor" -> {
@@ -97,9 +112,6 @@ fun SleepRecordListItem(
         color = Color.Gray,
         shape = RectangleShape,
         elevation = 3.dp,
-        onClick = {
-
-        }
     ) {
         Column(
             modifier = Modifier
@@ -132,6 +144,7 @@ fun SleepRecordListItem(
                     ) {
                         IconButton(
                             onClick = {
+                                openDialog = true
                             }
                         ) {
                             Icon(

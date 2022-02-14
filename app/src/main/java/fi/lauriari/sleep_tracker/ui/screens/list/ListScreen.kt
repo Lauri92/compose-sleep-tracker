@@ -20,7 +20,10 @@ fun ListScreen(
         content = {
             ListContent(
                 allSleepRecords = allSleepRecords,
-                navigateToSleepRecordScreen = navigateToSleepRecordScreen
+                navigateToSleepRecordScreen = navigateToSleepRecordScreen,
+                deleteSleepRecord = {
+                    mainViewModel.deleteSleepRecord()
+                }
             )
         },
         floatingActionButton = {

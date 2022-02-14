@@ -21,7 +21,11 @@ class SleepRepository @Inject constructor(
         return sleepRecordDao.getSelectedSleepRecord(sleepRecordId)
     }
 
-    fun updateSleepRecord(sleepRecord: SleepRecord) {
+    suspend fun updateSleepRecord(sleepRecord: SleepRecord) {
         sleepRecordDao.updateSleepRecord(sleepRecord)
+    }
+
+    suspend fun deleteSleepRecord(sleepRecord: SleepRecord) {
+        sleepRecordDao.deleteSleepRecord(sleepRecord)
     }
 }

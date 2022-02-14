@@ -20,6 +20,6 @@ interface SleepRecordDao {
     suspend fun deleteSleepRecord(sleepRecord: SleepRecord)
 
     @Update
-    fun updateSleepRecord(sleepRecord: SleepRecord)
+    suspend fun updateSleepRecord(sleepRecord: SleepRecord)
 
 }
