@@ -145,7 +145,7 @@ fun AddButton(
                 navigateToListScreen()
                 Toast.makeText(
                     context,
-                    "Inserted ${mainViewModel.day.value}.${mainViewModel.month.value}.${mainViewModel.year.value}",
+                    "Inserted ${mainViewModel.day.value}.${mainViewModel.month.value + 1}.${mainViewModel.year.value}",
                     Toast.LENGTH_LONG
                 ).show()
             }
