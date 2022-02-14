@@ -96,8 +96,6 @@ fun SleepRecordListItem(
     mainViewModel: MainViewModel
 ) {
 
-    val context = LocalContext.current
-
     var openDialog by remember { mutableStateOf(false) }
 
     DeleteAlertDialog(

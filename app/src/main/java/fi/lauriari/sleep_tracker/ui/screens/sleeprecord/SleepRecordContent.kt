@@ -1,6 +1,6 @@
 package fi.lauriari.sleep_tracker.ui.screens.sleeprecord
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -32,6 +32,7 @@ fun SleepRecordContent(
     onSleepDateChanged: (Long) -> Unit,
     addSleepRecord: () -> Unit,
     updateSleepRecord: () -> Unit,
+    sleepRecordId: Int,
 ) {
 
     val context = LocalContext.current
@@ -73,13 +74,14 @@ fun SleepRecordContent(
         SleepDatePicker(
             sleepDate = sleepDate,
             onSleepDateChanged = onSleepDateChanged,
-            mainViewModel = mainViewModel
+            mainViewModel = mainViewModel,
+            sleeprecordId = sleepRecordId
         )
 
         if (mainViewModel.id.value == 0) {
             AddButton(sleepQuality, addSleepRecord, navigateToListScreen, mainViewModel)
         } else {
-            UpdateButton(updateSleepRecord, navigateToListScreen)
+            UpdateButton(updateSleepRecord, navigateToListScreen, mainViewModel)
         }
     }
 }
@@ -87,8 +89,12 @@ fun SleepRecordContent(
 @Composable
 fun UpdateButton(
     updateSleepRecord: () -> Unit,
-    navigateToListScreen: () -> Unit
+    navigateToListScreen: () -> Unit,
+    mainViewModel: MainViewModel
 ) {
+
+    val context = LocalContext.current
+
     OutlinedButton(
         modifier = Modifier
             .padding(
@@ -100,6 +106,11 @@ fun UpdateButton(
         onClick = {
             updateSleepRecord()
             navigateToListScreen()
+            Toast.makeText(
+                context,
+                "Updated ${mainViewModel.day.value}.${mainViewModel.month.value + 1}.${mainViewModel.year.value}",
+                Toast.LENGTH_LONG
+            ).show()
         }) {
         Text(
             fontSize = 25.sp,
@@ -115,6 +126,9 @@ fun AddButton(
     navigateToListScreen: () -> Unit,
     mainViewModel: MainViewModel
 ) {
+
+    val context = LocalContext.current
+
     OutlinedButton(
         modifier = Modifier
             .padding(
@@ -129,6 +143,11 @@ fun AddButton(
             if (!isDuplicate) {
                 addSleepRecord()
                 navigateToListScreen()
+                Toast.makeText(
+                    context,
+                    "Inserted ${mainViewModel.day.value}.${mainViewModel.month.value}.${mainViewModel.year.value}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }) {
         Text(

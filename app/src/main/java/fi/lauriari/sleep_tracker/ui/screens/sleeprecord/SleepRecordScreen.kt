@@ -12,6 +12,7 @@ import fi.lauriari.sleep_tracker.viewmodels.MainViewModel
 fun SleepRecordScreen(
     mainViewModel: MainViewModel,
     navigateToListScreen: () -> Unit,
+    sleepRecordId: Int,
 ) {
 
     val sleepQuality: String by mainViewModel.sleepQuality
@@ -46,7 +47,8 @@ fun SleepRecordScreen(
                 },
                 updateSleepRecord = {
                     mainViewModel.updateSleepRecord()
-                }
+                },
+                sleepRecordId = sleepRecordId
             )
         }
     )

@@ -27,6 +27,7 @@ fun SleepDatePicker(
     sleepDate: Long,
     onSleepDateChanged: (Long) -> Unit,
     mainViewModel: MainViewModel,
+    sleeprecordId: Int,
 ) {
 
     val context = LocalContext.current
@@ -91,6 +92,7 @@ fun SleepDatePicker(
         Button(
             modifier = Modifier
                 .padding(15.dp),
+            enabled = sleeprecordId == -1,
             onClick = {
                 datePickerDialog.show()
             }) {

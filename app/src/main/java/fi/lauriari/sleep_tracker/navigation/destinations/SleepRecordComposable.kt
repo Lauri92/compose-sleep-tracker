@@ -1,7 +1,6 @@
 package fi.lauriari.sleep_tracker.navigation.destinations
 
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,6 +47,7 @@ fun NavGraphBuilder.sleepRecordComposable(
         SleepRecordScreen(
             navigateToListScreen = navigateToListScreen,
             mainViewModel = mainViewModel,
+            sleepRecordId = sleepRecordId,
         )
     }
 }
