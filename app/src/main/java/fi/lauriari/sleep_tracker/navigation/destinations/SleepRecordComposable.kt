@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -26,8 +25,6 @@ fun NavGraphBuilder.sleepRecordComposable(
             type = NavType.IntType
         })
     ) { navBackStackEntry ->
-
-        val context = LocalContext.current
 
         val sleepRecordId = navBackStackEntry.arguments!!.getInt(SLEEP_RECORD_KEY)
 

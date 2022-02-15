@@ -1,6 +1,7 @@
 package fi.lauriari.sleep_tracker.ui.screens.sleeprecord
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ fun SleepRecordScreen(
                 navigateToListScreen = navigateToListScreen,
                 sleepQuality = sleepQuality,
                 onSleepQualitySelected = {
+                    Log.d("sleeprecordscreen", mainViewModel.sleepQuality.value)
                     mainViewModel.sleepQuality.value = it
                 },
                 sleepHours = sleepHours,

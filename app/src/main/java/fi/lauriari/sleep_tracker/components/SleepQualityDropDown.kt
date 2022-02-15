@@ -1,5 +1,6 @@
 package fi.lauriari.sleep_tracker.components
 
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fi.lauriari.sleep_tracker.util.Constants
 import fi.lauriari.sleep_tracker.util.Constants.SLEEP_QUALITY_VALUES
 
 @Composable
@@ -92,6 +92,7 @@ fun SleepQualityDropDown(
             SLEEP_QUALITY_VALUES.forEach { sleepQualityValue ->
                 DropdownMenuItem(
                     onClick = {
+                        Log.d("sleeprecorddropdown", sleepQualityValue)
                         onSleepQualitySelected(sleepQualityValue)
                         expanded = false
                     })
